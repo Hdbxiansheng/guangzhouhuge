@@ -1,0 +1,18 @@
+{
+  "name": "car-rental-backend",
+  "version": "1.0.0",
+  "description": "网约车租车方案管理 - 云端后端（方案/登录/留资）",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pg": "^8.13.1"
+  }
+}

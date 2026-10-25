@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>租车方案助手（广州版）</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23117A50'/%3E%3Cpath d='M7 15l1-4 1.5-3h5l1.5 3 1 4z' fill='%23fff'/%3E%3Ccircle cx='8.5' cy='15.5' r='1.3' fill='%23fff'/%3E%3Ccircle cx='15.5' cy='15.5' r='1.3' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<style>
+  :root{--bg:#F6F8F6;--ink:#1B2A22;--muted:#66736B;--line:#E4EAE5;--card:#fff;--primary:#117A50;--primary-deep:#0B4E33;--accent:#B77A0C;--chip:#EAF2EC}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5}
+  button{font-family:inherit;cursor:pointer}
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px}
+  .topbar{background:var(--primary-deep);color:#fff}.topbar .in{max-width:760px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-weight:900;font-size:16px}.brand small{font-weight:500;font-size:12px;opacity:.8;margin-left:6px}
+  .topbar .nav{font-size:13px;background:rgba(255,255,255,.14);padding:5px 12px;border-radius:999px;cursor:pointer;border:none;color:#fff}
+  .home{padding:36px 0 24px;text-align:center}.home h1{font-size:24px;font-weight:900}.home .slogan{color:var(--muted);font-size:14px;margin-top:8px}
+  .searchbox{margin-top:22px;display:flex;gap:8px;max-width:520px;margin-left:auto;margin-right:auto}
+  .searchbox input{flex:1;font-size:16px;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-family:inherit;box-shadow:0 2px 10px rgba(11,78,51,.05)}
+  .searchbox input:focus{outline:2px solid var(--primary);outline-offset:-1px;border-color:var(--primary)}
+  .searchbox button{background:var(--primary);color:#fff;border:none;border-radius:12px;padding:0 20px;font-size:16px;font-weight:700}
+  .quick{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .quick button{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;color:var(--ink)}
+  .quick button:hover{border-color:var(--primary);color:var(--primary)}
+  .divider{display:flex;align-items:center;gap:10px;margin:26px 0 14px;color:var(--muted);font-size:13px}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+  .cos{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+  .co-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+  .co-card:hover{border-color:var(--primary)}.co-card .nm{font-weight:900;font-size:15px}.co-card .dt{color:var(--muted);font-size:12px}.co-card .cnt{color:var(--primary);font-size:12px;font-weight:700;margin-top:4px}
+  .bh{display:flex;align-items:center;gap:10px;margin:16px 0 12px}
+  .bh .back{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}.bh .t{font-weight:900;font-size:18px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .filters{display:grid;grid-template-columns:1fr;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:16px}
+  @media(min-width:600px){.filters{grid-template-columns:1fr auto}}
+  .filters input,.filters select{width:100%;font-size:15px;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font-family:inherit}
+  .filters input:focus,.filters select:focus{outline:2px solid var(--primary);outline-offset:-1px;border-color:var(--primary)}
+  .cars{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:600px){.cars{grid-template-columns:1fr 1fr}}
+  .car-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:8px}
+  .car-card:hover{border-color:var(--primary);box-shadow:0 4px 14px rgba(11,78,51,.08)}
+  .car-card .top{display:flex;align-items:center;justify-content:space-between;gap:8px}.car-card .co{font-size:12px;color:var(--primary);font-weight:700}.car-card .model{font-weight:900;font-size:16px}.car-card .dep{color:var(--muted);font-size:13px}
+  .car-card .plans{display:flex;flex-wrap:wrap;gap:6px}.car-card .plan{background:var(--chip);color:var(--primary-deep);font-weight:700;font-size:13px;padding:5px 9px;border-radius:8px}.car-card .low{font-size:13px;color:var(--accent);font-weight:700}.car-card .open{margin-top:2px;font-size:12.5px;color:var(--primary);font-weight:700}
+  .detail{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:16px}
+  .detail .co{font-size:13px;color:var(--primary);font-weight:700}.detail .model{font-size:20px;font-weight:900;margin:4px 0}.detail .dep{color:var(--muted);font-size:14px}
+  .detail .rows{display:flex;flex-direction:column;gap:8px;margin-top:16px}.detail .row{display:flex;align-items:center;justify-content:space-between;background:var(--chip);border-radius:10px;padding:11px 13px}
+  .detail .row .p{font-weight:700}.detail .row .r{font-weight:900;font-size:16px}.detail .row .eff{color:var(--primary);font-size:12.5px}.detail .row .bonus{font-size:12px;color:var(--muted);margin-top:3px}
+  .block{margin-top:16px}.block .bt{font-weight:700;font-size:13px;color:var(--primary-deep);margin-bottom:8px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{background:var(--chip);font-size:12.5px;padding:6px 10px;border-radius:999px;color:var(--ink)}
+  .promo{font-size:12.5px;color:#7a5408;background:#FBF1DE;padding:9px 11px;border-radius:9px;margin-top:6px;line-height:1.5}
+  .empty{text-align:center;color:var(--muted);padding:34px 0}
+  footer{margin:28px 0 0;padding:18px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center}
+  footer a{color:var(--primary);text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in"><div class="brand">租车方案助手<small>广州版</small></div><button class="nav" id="homeBtn" style="display:none">首页</button></div></header>
+<main class="wrap">
+  <section id="home"><div class="home">
+    <h1>租车方案助手</h1><p class="slogan">输入车型，查看各车源的押金、租金与优惠</p>
+    <div class="searchbox"><input id="homeKw" type="search" enterkeyhint="search" placeholder="搜索车型，如：启辰VX6 / 红旗 / Aion"><button id="homeSearch">搜索</button></div>
+    <div class="quick" id="quick"></div><div class="divider">按车源查看方案</div><div class="cos" id="cos"></div>
+  </div></section>
+  <section id="browse" style="display:none">
+    <div class="bh"><button class="back" id="backBtn">返回</button><div class="t" id="browseTitle">方案</div></div>
+    <div class="filters"><input id="kw" type="search" enterkeyhint="search" placeholder="搜索车型"><select id="rent"><option value="">车辆月租：不限</option><option value="2000">2000元以内</option><option value="2500">2500元以内</option><option value="3000">3000元以内</option><option value="3500">3500元以内</option><option value="4000">4000元以内</option></select></div>
+    <div class="cars" id="cars"></div><div id="detail" style="display:none"></div><div class="empty" id="empty" style="display:none">没有找到符合条件的车型，换个关键词试试</div>
+  </section>
+</main>
+<footer><div class="wrap">咨询：<a href="tel:13611472233">广州胡哥 136 1147 2233</a><br><span style="color:var(--muted);font-size:12px">方案以门店实时报价为准</span></div></footer>
+
+<script>
+var SCHEMES=[];
+function minRent(c){var m=1e9;(c.plans||c.installmentPlans||[]).forEach(function(p){if((p.r||p.monthlyRent)<m)m=(p.r||p.monthlyRent);});return m===1e9?0:m;}
+function fmt(n){return (n==null?'':n.toLocaleString('zh-CN'));}
+function plansOf(c){return c.plans||c.installmentPlans||[];}
+function planChip(p){var r=p.r||p.monthlyRent;var t=p.periods||p.p;t=t+'期 ¥'+fmt(r);if(p.giftDays||p.gift)t+=' ·送'+(p.giftDays||p.gift)+'天';if(p.effectiveRent||p.eff)t+=' ·优惠后¥'+fmt(p.effectiveRent||p.eff);return t;}
+function norm(s){return String(s).toLowerCase();}
+function allCars(){var out=[];SCHEMES.forEach(function(s){(s.carList||[]).forEach(function(c){out.push({co:s,car:c,key:s.id+'|'+c.model});});});return out;}
+var state={view:'home',query:'',company:'',rentCap:0,activeKey:null};
+function matchCar(it){var q=norm(state.query),cp=norm(it.co.company),cm=norm(it.car.model);if(state.company&&state.company!==it.co.company)return false;if(state.rentCap&&minRent(it.car)>state.rentCap)return false;if(q&&(cp+' '+cm).indexOf(q)<0)return false;return true;}
+function carCardsHTML(items){return items.map(function(it){var c=it.car,s=it.co,low=minRent(c);return '<div class="car-card" data-key="'+it.key+'"><div class="top"><span class="co">'+s.company+'</span><span class="low">最低 ¥'+fmt(low)+'/月</span></div><div class="model">'+c.model+'</div><div class="dep">押金 ¥'+fmt(c.deposit)+(c.depNote?'（'+c.depNote+'）':'')+'</div><div class="plans">'+plansOf(c).slice(0,4).map(planChip).join('')+'</div><div class="open">点击查看方案详情 →</div></div>';}).join('');}
+function renderHome(){state.view='home';document.getElementById('home').style.display='block';document.getElementById('browse').style.display='none';document.getElementById('homeBtn').style.display='none';document.getElementById('homeKw').value='';var seen={},models=[];allCars().forEach(function(it){var k=norm(it.car.model);if(!seen[k]){seen[k]=1;models.push(it.car.model);}});document.getElementById('quick').innerHTML=models.slice(0,7).map(function(m){return '<button data-m="'+m.replace(/"/g,'&quot;')+'">'+m+'</button>';}).join('');document.getElementById('cos').innerHTML=SCHEMES.map(function(s){return '<div class="co-card" data-c="'+s.company+'"><div class="nm">'+s.company+'</div><div class="dt">'+(s.updateDate||'')+'</div><div class="cnt">'+(s.carList||[]).length+' 款车型 ›</div></div>';}).join('');}
+function renderBrowse(){state.view='browse';document.getElementById('home').style.display='none';document.getElementById('browse').style.display='block';document.getElementById('homeBtn').style.display='block';document.getElementById('browseTitle').textContent=state.company?state.company:(state.query?('“'+state.query+'”'):'全部方案');document.getElementById('kw').value=state.query;var m=allCars().filter(matchCar);document.getElementById('empty').style.display=m.length?'none':'block';document.getElementById('cars').innerHTML=carCardsHTML(m);document.getElementById('detail').style.display='none';}
+function renderDetail(key){var it=allCars().find(function(x){return x.key===key;});if(!it)return;var c=it.car,s=it.co;document.getElementById('cars').style.display='none';document.getElementById('detail').style.display='block';document.getElementById('detail').innerHTML='<div class="co">'+s.company+'</div><div class="model">'+c.model+'</div><div class="dep">押金 ¥'+fmt(c.deposit)+(c.depNote?' · '+c.depNote:'')+'</div><div class="rows">'+plansOf(c).map(function(p){var r=p.r||p.monthlyRent,per=p.periods||p.p;var note=p.note||p.otherBenefits||'';return '<div class="row"><div><div class="p">'+per+'期</div>'+(note?'<div class="bonus">'+note+'</div>':'')+'</div><div><div class="r">¥'+fmt(r)+'/月</div>'+(p.effectiveRent||p.eff?'<div class="eff">优惠后约¥'+fmt(p.effectiveRent||p.eff)+'/月</div>':'')+'</div></div>';}).join('')+'</div>'+((s.rules&&s.rules.length)?'<div class="block"><div class="bt">通用条款</div><div class="chips">'+s.rules.map(function(x){return typeof x==='string'?('<span>'+x+'</span>'):'';}).join('')+'</div></div>':'');}
+document.getElementById('homeSearch').addEventListener('click',function(){state.query=document.getElementById('homeKw').value.trim();state.company='';state.activeKey=null;renderBrowse();});
+document.getElementById('homeKw').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('homeSearch').click();});
+document.getElementById('quick').addEventListener('click',function(e){var b=e.target.closest('button');if(b){state.query=b.getAttribute('data-m');state.company='';state.activeKey=null;renderBrowse();}});
+document.getElementById('cos').addEventListener('click',function(e){var b=e.target.closest('.co-card');if(b){state.query='';state.company=b.getAttribute('data-c');state.activeKey=null;renderBrowse();}});
+document.getElementById('backBtn').addEventListener('click',function(){if(state.activeKey){state.activeKey=null;document.getElementById('cars').style.display='grid';renderBrowse();}else renderHome();});
+document.getElementById('homeBtn').addEventListener('click',renderHome);
+document.getElementById('kw').addEventListener('input',function(){state.query=this.value.trim();state.activeKey=null;renderBrowse();});
+document.getElementById('rent').addEventListener('change',function(){state.rentCap=this.value?parseInt(this.value,10):0;state.activeKey=null;renderBrowse();});
+document.getElementById('cars').addEventListener('click',function(e){var b=e.target.closest('.car-card');if(b){state.activeKey=b.getAttribute('data-key');renderDetail(state.activeKey);}});
+fetch('/api/schemes').then(function(r){return r.json();}).then(function(data){SCHEMES=data;renderHome();}).catch(function(){document.getElementById('home').innerHTML='<div class="empty">暂时无法加载方案，请稍后刷新</div>';});
+</script>
+</body>
+</html>
