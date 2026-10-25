@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ],
+  "functions": {
+    "api/index.js": { "maxDuration": 30, "memory": 512 }
+  }
+}
